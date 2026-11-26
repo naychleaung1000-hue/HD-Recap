@@ -3,9 +3,21 @@ package com.hdrecap.app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -28,8 +40,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun RecapHomeScreen() {
-    var videoUrl by remember { mutableStateOf("") }
-    var statusText by remember { mutableStateOf("Ready to process video") }
+    val videoUrl = remember { mutableStateOf("") }
+    val statusText = remember { mutableStateOf("Ready to process video") }
 
     Column(
         modifier = Modifier
@@ -44,18 +56,18 @@ fun RecapHomeScreen() {
         )
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
-            value = videoUrl,
-            onValueChange = { videoUrl = it },
+            value = videoUrl.value,
+            onValueChange = { videoUrl.value = it },
             label = { Text("Paste Video Link") },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = {
-                statusText = if (videoUrl.isBlank()) {
+                statusText.value = if (videoUrl.value.isBlank()) {
                     "Please enter a valid link"
                 } else {
-                    "Processing: $videoUrl"
+                    "Processing: ${videoUrl.value}"
                 }
             },
             modifier = Modifier.fillMaxWidth()
@@ -63,6 +75,6 @@ fun RecapHomeScreen() {
             Text("Start Recap & Dubbing")
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = statusText)
+        Text(text = statusText.value)
     }
 }
